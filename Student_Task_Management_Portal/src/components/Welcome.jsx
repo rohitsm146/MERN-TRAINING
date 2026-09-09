@@ -1,6 +1,8 @@
-function Welcome(){
+function Welcome() {
     return (
-        <h1>Welcome to Student Task Management Portal</h1>
+        <section className="welcome">
+            <h1>Welcome back, Student!</h1>
+        </section>
     );
 }
 
