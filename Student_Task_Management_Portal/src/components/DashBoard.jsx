@@ -1,41 +1,86 @@
 import StatCard from "./StatCard";
 import TaskCard from "./TaskCard";
+import AddTask from "./AddTask";
+import { useState } from "react";
 
 function DashBoard() {
-    const tasks = [
+    const [tasks, setTasks] = useState([
         {
-            id:1,
+            id: 1,
             topic: "Learn React",
             description: "Understanding Components",
             status: "Completed"
         },
         {
-            id:2,
+            id: 2,
             topic: "Learn JavaScript",
             description: "Understanding Async/Await",
             status: "Pending"
         },
         {
-            id:3,
+            id: 3,
             topic: "Learn MongoDB",
             description: "Database",
             status: "Completed"
         },
         {
-            id:4,
+            id: 4,
             topic: "Learn SQL",
             description: "Database",
             status: "Completed"
         }
-    ];
+    ]);
+
+    function toggleTask(id) {
+        setTasks(
+            tasks.map((task) => {
+                if (task.id === id) {
+                    return {
+                        ...task,
+                        status:
+                            task.status === "Completed"
+                                ? "Pending"
+                                : "Completed"
+                    };
+                }
+
+                return task;
+            })
+        );
+    }
+
+    function addTask(newTask) {
+        setTasks([...tasks, newTask]);
+    }
 
     return (
         <main>
             <div className="stats-container">
-                <StatCard title="Total-Tasks" value="3" />
-                <StatCard title="Completed" value="2" />
-                <StatCard title="Pending" value="1" />
+                <StatCard
+                    title="Total-Tasks"
+                    value={tasks.length}
+                />
+
+                <StatCard
+                    title="Completed"
+                    value={
+                        tasks.filter(
+                            (task) => task.status === "Completed"
+                        ).length
+                    }
+                />
+
+                <StatCard
+                    title="Pending"
+                    value={
+                        tasks.filter(
+                            (task) => task.status === "Pending"
+                        ).length
+                    }
+                />
             </div>
+
+            <AddTask onAddTask={addTask} />
 
             <h2>Recent Tasks</h2>
 
@@ -46,6 +91,7 @@ function DashBoard() {
                         title={task.topic}
                         description={task.description}
                         status={task.status}
+                        onToggle={() => toggleTask(task.id)}
                     />
                 ))}
             </div>
