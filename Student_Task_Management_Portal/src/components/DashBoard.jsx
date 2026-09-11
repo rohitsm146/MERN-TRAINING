@@ -53,6 +53,11 @@ function DashBoard() {
         setTasks([...tasks, newTask]);
     }
 
+
+    function deleteTask(id) {
+        setTasks(tasks.filter((task) => task.id !== id));
+    }
+
     return (
         <main>
             <div className="stats-container">
@@ -92,6 +97,7 @@ function DashBoard() {
                         description={task.description}
                         status={task.status}
                         onToggle={() => toggleTask(task.id)}
+                        onDelete={() => deleteTask(task.id)}
                     />
                 ))}
             </div>
