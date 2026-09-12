@@ -34,6 +34,7 @@ function App() {
     },
   ]);
 
+  // Toggle task status
   function toggleTask(id) {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -50,10 +51,12 @@ function App() {
     );
   }
 
+  // Add a new task
   function addTask(newTask) {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   }
 
+  // Delete a task
   function deleteTask(id) {
     setTasks((prevTasks) =>
       prevTasks.filter((task) => task.id !== id)
@@ -65,6 +68,7 @@ function App() {
       <Navbar />
 
       <Routes>
+        {/* Dashboard */}
         <Route
           path="/"
           element={
@@ -77,6 +81,7 @@ function App() {
           }
         />
 
+        {/* All Tasks */}
         <Route
           path="/tasks"
           element={
@@ -88,6 +93,7 @@ function App() {
           }
         />
 
+        {/* Task Details */}
         <Route
           path="/tasks/:id"
           element={<TaskDetails tasks={tasks} />}
