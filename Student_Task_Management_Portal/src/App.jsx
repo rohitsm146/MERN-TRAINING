@@ -3,36 +3,20 @@ import Navbar from "./components/Navbar";
 import DashBoard from "./components/DashBoard";
 import Task from "./components/Task";
 import TaskDetails from "./components/TaskDetails";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      topic: "Learn React",
-      description: "Understanding Components",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      topic: "Learn JavaScript",
-      description: "Understanding Async/Await",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      topic: "Learn MongoDB",
-      description: "Database",
-      status: "Completed",
-    },
-    {
-      id: 4,
-      topic: "Learn SQL",
-      description: "Database",
-      status: "Completed",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  // Get tasks from backend
+   useEffect(()=>{
+    fetch("http://localhost:5000/api/tasks")
+    .then((response)=>response.json())
+    .then((data)=>{
+      setTasks(data);
+    });
+   },[]);
 
   // Toggle task status
   function toggleTask(id) {
