@@ -1,4 +1,4 @@
-function StatCard( props ) {
+function StatCard(props) {
     return (
         <div className="stat-card">
             <h3>{props.title}</h3>

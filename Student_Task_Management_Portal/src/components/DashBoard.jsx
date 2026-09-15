@@ -2,53 +2,63 @@ import StatCard from "./StatCard";
 import TaskCard from "./TaskCard";
 import AddTask from "./AddTask";
 
-function DashBoard(props) {
-  return (
-    <main>
-      <div className="stats-container">
-        <StatCard
-          title="Total-Tasks"
-          value={props.tasks.length}
-        />
+function Dashboard(props) {
 
-        <StatCard
-          title="Completed"
-          value={
-            props.tasks.filter(
-              (task) => task.status === "Completed"
-            ).length
-          }
-        />
+    function toggleTask(id){
+        props.setTasks(
+            props.tasks.map((task) => {
+                if(task.id === id){
+                    return {...task, 
+                        status: task.status === "Completed" 
+                                    ? "Pending" 
+                                    : "Completed"
+                    };
+                }
+                return task;
+            })
+        );
+    }
 
-        <StatCard
-          title="Pending"
-          value={
-            props.tasks.filter(
-              (task) => task.status === "Pending"
-            ).length
-          }
-        />
-      </div>
+    function addTask(newTask){
+        props.setTasks([...props.tasks, newTask]);
+    }
 
-      <AddTask onAddTask={props.onAddTask} />
+    function deleteTask(id){
+        props.setTasks(
+            props.tasks.filter((task)=>task.id !==id)
+        );
+    }
 
-      <h2>Recent Tasks</h2>
+    return (
+        <main>
+        
+            <div className="stats-container">
+                <StatCard title="Total Tasks" value="10"/>
+                <StatCard title="Completed" value="6"/>
+                <StatCard title="Pending" value="4"/>
+                
+            </div>
 
-      <div className="tasks-container">
-        {props.tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            id={task.id}
-            title={task.topic}
-            description={task.description}
-            status={task.status}
-            onToggle={() => props.onToggleTask(task.id)}
-            onDelete={() => props.onDeleteTask(task.id)}
-          />
-        ))}
-      </div>
-    </main>
-  );
+            <AddTask  onAddTask={addTask}/>
+
+            <h2>Recent Tasks</h2>
+
+            <div className="tasks-container">
+                {props.tasks.map((task)=>(
+                    <TaskCard 
+                        key={task.id} 
+                        id ={task.id}
+                        title={task.title} 
+                        description={task.description} 
+                        status={task.status}
+                        onToggle={()=>toggleTask(task.id)} 
+                        onDelete={()=>deleteTask(task.id)}
+                    />
+                ))};
+            </div>
+
+        </main>
+    );
 }
 
-export default DashBoard;
+export default Dashboard;
