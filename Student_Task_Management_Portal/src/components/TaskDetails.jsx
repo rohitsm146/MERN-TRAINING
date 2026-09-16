@@ -1,12 +1,48 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-function TaskDetails(props){
-    const {id} = useParams();
-    const task = props.tasks.find(
-        (tasks) => tasks.id === Number(id)
-    );
-    if(!task){
-        return <h2> Task Not Found!</h2>
+
+function TaskDetails() {
+    const { id } = useParams();
+
+    const [task, setTask] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        setLoading(true);
+        setError("");
+
+        fetch(`http://localhost:5000/api/tasks/${id}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Task Not Found!");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setTask(data);
+            })
+            .catch((error) => {
+                console.log(error);
+                setError(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [id]);
+
+    if (loading) {
+        return <h2>Loading...</h2>;
     }
+
+    if (error) {
+        return <h2>{error}</h2>;
+    }
+
+    if (!task) {
+        return <h2>Task Not Found!</h2>;
+    }
+
     return (
         <div>
             <h1>Task Details</h1>
@@ -16,4 +52,5 @@ function TaskDetails(props){
         </div>
     );
 }
+
 export default TaskDetails;
