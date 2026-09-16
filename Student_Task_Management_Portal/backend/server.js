@@ -1,113 +1,89 @@
-// Bring Express into Node.js
+require("dotenv").config();
+
+// bring express in Node.js
 const express = require("express");
 
-// Import CORS middleware
+// installing cors middleware
 const cors = require("cors");
 
-// Create Express app
+// create express app using what we imported
 const app = express();
 
-// Middleware
+const mongoose = require("mongoose");
+
+// use cors middleware to handle requests
 app.use(cors());
 app.use(express.json());
 
-// Temporary task data
+mongoose.connect(process.env.MONGODB_URL)
+.then(()=>{
+    console.log
+    ("MongoDB Connected Successfully!");
+}).catch((error)=>{
+    console.log
+    ("MongoDB Connection Failed: ", error.message);
+})
+
 const tasks = [
     {
-        id: 1,
-        title: "Learn React",
-        description: "Understanding Components",
+        id:1,
+        title:"Learn React",
+        description:"Understanding Components",
         status: "Completed"
     },
     {
-        id: 2,
-        title: "Learn JavaScript",
-        description: "Understanding Variables, Functions",
+        id:2,
+        title:"Learn JavaScript",
+        description:"Understanding Variables, Functions",
         status: "Pending"
-    }
+    }   
 ];
 
-// GET all tasks
-app.get("/api/tasks", (req, res) => {
+app.get("/api/tasks", (req, res) =>{
     res.json(tasks);
 });
 
-// GET one task
-app.get("/api/tasks/:id", (req, res) => {
+app.get("/api/tasks/:id", (req, res)=>{
     const id = Number(req.params.id);
-
-    const task = tasks.find((task) => task.id === id);
-
-    if (!task) {
-        return res.status(404).json({
-            message: "Task not found!"
-        });
+    const task = tasks.find((task)=> task.id === id);
+    if(!task){
+        return res.status(404).json({message : "Task not found!"});
     }
-
     res.json(task);
-});
+})
 
-// UPDATE task
-app.put("/api/tasks/:id", (req, res) => {
+app.put("/api/tasks/:id", (req, res)=>{
     const id = Number(req.params.id);
-
-    const task = tasks.find((task) => task.id === id);
-
-    if (!task) {
-        return res.status(404).json({
-            message: "Task not found!"
-        });
+    const task = tasks.find((task)=>task.id === id);
+    if(!task){
+        return res.status(404).json({message:"Task Not Found"})
     }
-
     task.status = req.body.status;
-
     res.json(task);
-});
+})
 
-// DELETE task
 app.delete("/api/tasks/:id", (req, res) => {
     const id = Number(req.params.id);
-
-    const taskIndex = tasks.findIndex(
-        (task) => task.id === id
-    );
-
-    if (taskIndex === -1) {
-        return res.status(404).json({
-            message: "Task not found!"
-        });
+    const taskIndex = tasks.findIndex((task)=> task.id === id);
+    if(taskIndex === -1){
+        return res.status(404).json({message: "Task Not Found"});
     }
-
     const deletedTask = tasks.splice(taskIndex, 1);
+    res.json(deletedTask[0]);
+})
 
-    res.json({
-        message: "Task deleted successfully!",
-        task: deletedTask[0]
-    });
-});
-
-// CREATE task
-app.post("/api/tasks", (req, res) => {
-    const newTask = {
-        id: tasks.length > 0
-            ? Math.max(...tasks.map((task) => task.id)) + 1
-            : 1,
-        title: req.body.title,
-        description: req.body.description,
-        status: req.body.status || "Pending"
-    };
-
+app.post("/api/tasks", (req, res)=>{
+    const newTask = req.body;
     tasks.push(newTask);
-
     res.status(201).json(newTask);
-});
+})
 
-// API route for testing backend
+// API Route (Testing Backend)
 app.get("/", (req, res) => {
-    res.send("Backend is Working!!");
+    res.send("Backend is Working!!")
 });
 
-// Start server
+// start the server and listen to port 5000
 app.listen(5000, () => {
     console.log("Server is Running on port 5000");
 });
