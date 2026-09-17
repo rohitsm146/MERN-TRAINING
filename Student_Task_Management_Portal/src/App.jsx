@@ -6,8 +6,8 @@ import {Routes, Route} from "react-router-dom"
 import Tasks from "./components/Tasks";
 import TaskDetails from "./components/TaskDetails";
 import { useState, useEffect } from "react";
-function App(){
 
+function App(){
   const [tasks, setTasks] = useState([]);
 
   useEffect(()=>{
