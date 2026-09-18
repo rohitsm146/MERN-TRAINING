@@ -1,17 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ setIsLoggedIn }) {
+    const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem("token");
-        console.log("Logged Out Succesfully");
-    }
+        setIsLoggedIn(false);
+        navigate("/login");
+
+    };
     return (
         <nav>
-            <h2>Student Task Portal</h2>
-
+            <h2>
+                Student Task Portal
+            </h2>
             <div className="nav-links">
-                <Link to={"/"}>Home</Link>
-                <Link to={"/tasks"}> Tasks</Link>
+                <Link to="/">
+                    Home
+                </Link>
+                <Link to="/tasks">
+                    Tasks
+                </Link>
                 <button onClick={handleLogout}>
                     Logout
                 </button>
