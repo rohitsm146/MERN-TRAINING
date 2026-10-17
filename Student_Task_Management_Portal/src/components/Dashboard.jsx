@@ -17,7 +17,7 @@ function Dashboard(props) {
 
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:5000/api/tasks/${id}`,{
+            const response = await fetch(`https://mern-training-khpa.onrender.com/api/tasks/${id}`,{
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ function Dashboard(props) {
     async function deleteTask(id) {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:5000/api/tasks/${id}`,{
+            const response = await fetch(`https://mern-training-khpa.onrender.com/api/tasks/${id}`,{
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${token}`

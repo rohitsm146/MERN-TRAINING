@@ -10,7 +10,7 @@ function TaskDetails() {
         const token = localStorage.getItem("token");
         setLoading(true);
         setError("");
-        fetch(`http://localhost:5000/api/tasks/${id}`,{
+        fetch(`https://mern-training-khpa.onrender.com/api/tasks/${id}`,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

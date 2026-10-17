@@ -24,7 +24,7 @@ function App() {
         }
         const token =
             localStorage.getItem("token");
-        fetch("http://localhost:5000/api/tasks",{
+        fetch("https://mern-training-khpa.onrender.com/api/tasks",{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
